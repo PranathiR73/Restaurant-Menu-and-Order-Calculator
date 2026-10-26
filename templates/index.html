@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mysore Spice Restaurant | Menu & Order</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/" class="logo">Mysore Spice</a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About Us</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <p class="tagline">NAMMA MYSURU • NAMMA OOTA</p>
+        <h1>Welcome to <span>Mysore Spice</span></h1>
+        <p>
+            Authentic South Indian flavours, delicious chaats,
+            tasty snacks and refreshing drinks — all in one place.
+        </p>
+        <a href="#menu" class="button-link">Explore Our Menu</a>
+    </section>
+
+    <section class="menu-section" id="menu">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">MADE WITH LOVE</p>
+                <h2>Our Food Menu</h2>
+            </div>
+            <span class="veg-label">● Pure Vegetarian</span>
+        </div>
+
+        <form action="/order" method="POST">
+            <div class="customer-box">
+                <label for="customer_name">Customer Name</label>
+                <input
+                    type="text"
+                    id="customer_name"
+                    name="customer_name"
+                    placeholder="Enter your name"
+                    maxlength="80"
+                    required
+                >
+            </div>
+
+            {% for category, items in categories.items() %}
+            <section class="category-section">
+                <h2 class="category-title">{{ category }}</h2>
+
+                <div class="menu-grid">
+                    {% for item in items %}
+                    <article class="food-card">
+                        <div class="food-icon">
+                            {% if "Dosa" in item %}
+                                🥞
+                            {% elif "Idli" in item %}
+                                🍘
+                            {% elif "Bath" in item or "Pongal" in item %}
+                                🍲
+                            {% elif "Poori" in item %}
+                                🫓
+                            {% elif "Bajji" in item or "Samosa" in item %}
+                                🥟
+                            {% elif "Puri" in item %}
+                                🥙
+                            {% elif "Sandwich" in item %}
+                                🥪
+                            {% elif "Pak" in item or "Jamun" in item %}
+                                🍮
+                            {% elif "Coffee" in item %}
+                                ☕
+                            {% elif "Tea" in item %}
+                                🍵
+                            {% elif "Milk" in item %}
+                                🥛
+                            {% elif "Soda" in item %}
+                                🥤
+                            {% elif "Juice" in item %}
+                                🧃
+                            {% else %}
+                                🍽️
+                            {% endif %}
+                        </div>
+
+                        <div class="food-details">
+                            <h3>{{ item }}</h3>
+                            <p>
+                                {% if category == "Mysuru Specials" %}
+                                    South Indian favourite
+                                {% elif category == "Chaats & Snacks" %}
+                                    Fresh and flavourful snack
+                                {% elif category == "Sweets & Desserts" %}
+                                    A sweet treat
+                                {% else %}
+                                    Refreshing sip, happy moments
+                                {% endif %}
+                            </p>
+                            <strong>₹{{ menu[item] }}</strong>
+                        </div>
+
+                        <div class="quantity-box">
+                            <label for="qty{{ loop.index }}{{ loop.depth if loop.depth is defined else '' }}{{ item|replace(' ', '') }}">
+                                Qty
+                            </label>
+                            <input
+                                type="number"
+                                id="qty{{ loop.index }}{{ item|replace(' ', '') }}"
+                                name="{{ item }}"
+                                value="0"
+                                min="0"
+                                max="100"
+                                step="1"
+                            >
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+
+            <div class="order-footer">
+                <p>Select your items and quantities to calculate your bill.</p>
+                <button type="submit">Calculate My Bill →</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>Mysore Spice Restaurant · Namma Oota, Namma Mysuru!</p>
+    <p>Good food, great taste and happy moments.</p>
+</footer>
+</body>
+</html>

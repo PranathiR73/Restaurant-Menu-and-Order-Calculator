@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary | Mysore Spice Restaurant</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/" class="logo">Mysore Spice</a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+    </nav>
+</header>
+
+<main class="result-container">
+    {% if error %}
+        <section class="result-card error-card">
+            <div class="result-icon">⚠️</div>
+            <h1>Oops! Something went wrong.</h1>
+            <p>{{ error }}</p>
+            <a href="/" class="button-link">Return to Menu</a>
+        </section>
+
+    {% elif order %}
+        <section class="result-card">
+            <div class="result-icon">✓</div>
+            <p class="eyebrow">ORDER SUMMARY</p>
+            <h1>Thank you, {{ order.customer_name }}!</h1>
+            <p>Your order has been calculated successfully.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Food Item</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order["items"] %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>₹{{ item.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>₹{{ item.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total-box">
+                <span>Grand Total</span>
+                <strong>₹{{ order.total }}</strong>
+            </div>
+
+            <a href="/" class="button-link">Place Another Order</a>
+        </section>
+    {% endif %}
+</main>
+
+<footer>
+    <p>Mysore Spice Restaurant · Namma Oota, Namma Mysuru!</p>
+    <p>Thank you for visiting.</p>
+</footer>
+
+</body>
+</html>
